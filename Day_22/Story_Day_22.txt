@@ -1,0 +1,357 @@
+
+Unsupervised Machine Learning Dataset  contains only features. 
+It may contain labels in the dataset but we are not going to predict them
+
+We can perform two things on Unsupervised ML Dataset
+    1. Clustering 
+    2. Association 
+
+Divide data into Groups ( features ) is known as Cluster and the process is known as clustering
+    
+
+Popular Clustering Algorithm 
+    1. kMeans++
+    2. DBSCAN
+
+Day_22_Clustering.py
+
+xclara.csv  has 2 columns V1 and V2  where V1 has x coordinates and V2 y coordinates
+
+V1 and V2 are features and it has no labels. We need to make different groups.
+
+Go Line by Line 
+
+Lets do an Analysis of data by plotting on a graph using scatter.
+
+After visualisation it seems to be broken into 3 groups.
+
+If we are not able visualisation the data, then how to decide how many clusters can be created ?
+
+We are using kMean++ Algorithm to do the same.
+
+Create object of kMeans and pass required parameters and then fit_predict by passing features and store the prediction in pred_cluster
+
+After seeing data, pred_cluster is a series. Its unique method will come to know that it has ( 0, 1, 2 )
+
+Compare features and pred_cluster in the variable explorer, values are in the category ( 0, 1, 2 )
+
+Filtering using pandas  features [ pred_cluster == 0 ]
+
+len (features [ pred_cluster == 0 ] ) this will give 952
+len (features [ pred_cluster == 1 ] ) this will give 1149
+len (features [ pred_cluster == 2 ] ) this will give 899
+
+x value = features [ pred_cluster == 0 , 0 ]
+y value = features [ pred_cluster == 0 , 1 ]
+
+
+Visualising the cluster code, explain the code 
+
+Explain the concept of Center of Mass = Centroid 
+
+                     Sum of x coordinates 
+x of centroid   =   -----------------------
+                    Total number of values 
+                    
+
+                     Sum of y coordinates 
+y of centroid   =   -----------------------
+                    Total number of values                     
+
+
+Compare both of them
+                            np.sum(features [ pred_cluster == 0 , 0 ] )
+kmean.cluster_centers_ =  ----------------------------------------------
+                            len (features [ pred_cluster == 0 , 0 ] )
+
+
+How is the cluster made ?
+How it is decided that cluster should be 3 ? (optimal number of cluster)
+
+
+How is the cluster made ?
+Solution:
+
+Open the Webpage
+https://www.naftaliharris.com/blog/visualizing-k-means-clustering/
+How to pick the initial centroids?  == Randomly
+What kind of data would you like?   == Uniform Points
+
+Display data in 2D Plane 
+
+Add Centroid - Randomly places a point as a centroid
+
+Since we need to have a centroid, but this is placed randomly which is not the right position
+
+Add another Centroid, which now divides the data points into 2 parts or divisions
+
+It uses a logic wherein it draws a straight line between the two centroid and bisects centrally at 90 degree
+
+Add Centroid again, this will divide into 3 parts, but all the 3 centroid are not at the right place, since they are placed randomly
+
+Click GO to fix the data points and starting points of the centroid.
+
+Now Click Update Centroids again and again, so that it would change the boundary division
+Since it would recalculate the centroid
+
+Now because of recalulation, some of the points will cross boundary of the older divisions
+
+Now Reassign Points based on new division , this should change the centroid again 
+
+Again and Again Reassign and Update Centroid
+
+This loops goes on, you will come to a point that wull not change the centroid, that is the actual centroid
+
+That would be the final clusters 
+
+vernocil diagram is the technical name of the image drawn
+
+Jaipur Population Density - can be visualised in this way to setup 3 health centers 
+So that the avarge customers needs to travel the least to reach the health center 
+
+London Example of Ambulance to be placed at which location 
+
+
+How it is decided that cluster should be 3 ? (optimal number of cluster)
+Solution :
+
+WCSS ( Within Cluster Sum of Squares )
+
+WCSS decreases when centroid increases
+One level will come, when you increase the centroid, but WCSS remains same
+
+Give example of too many ATM locations in any city
+
+Show WCSS.jpg and explain it 
+
+kmeans.inertia_ ( calculates wcss for a cluster )
+
+Explain the Elbow Code 
+
+Now plot it and try to find Elbow, The elbow points is the right number of cluster 
+
+Another way to detect the optimal number of cluster is Silhouette method
+
+Run the Silhouette Code, when the Silhouette score is maximum, it is the optimal number of clusters 
+
+
+Open the Webpage
+https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/
+What kind of data would you like?   == Smiley Face
+
+Data in not uniformly distributed, there should be 4 clusters, but kMeans will give different clusters
+
+kMeans is good when the data is uniformly distributed
+
+DBSCAN is good for non uniformly distributed data. Does not uses centroid concept
+
+Explain the animation for minimum_samples and epsilon, 
+There should be minimum samples in the circle drawn with epsilon radius
+
+Apply recursion for the points within the circle and the proces goes on...
+
+Noise are those points which are not part of any cluster, it gives -1
+
+db_scan_example.py
+
+
+make_blobs generates random points from any point from a list
+
+Explain Line by Line 
+
+Visualise the cluster 
+
+Hierarichal Clustering is another Algorithm
+
+
+
+
+
+
+
+
+
+
+
+//pickle files
+It is used for serializing and de-serializing a Python object structure. 
+Any object in python can be pickled so that it can be saved on disk. 
+What pickle does is that it “serialises” the object first before writing it to file. 
+Pickling is a way to convert a python object (list, dict, etc.) into a character stream. 
+The idea is that this character stream contains all the information necessary to 
+reconstruct the object in another python script.
+Methods to save the scikit learn models
+
+The modern ways to save the trained scikit learn models is using the packages like
+
+Pickle (Python Object Serialization Library)
+Joblib (One of the scikit-learn Method)
+
+What is Pickle?
+
+Pickle is one of the Python standard libraries. Which is so powerful and the best choice to perform the task like
+
+Serialization
+Marshalling
+The above two functionalities are popularly known as  Pickling and Unpickling
+
+Pickling
+Pickling is the process converting any Python object into a stream of bytes by following the hierarchy of the object we are trying to convert.
+Unpickling
+Unpickling is the process of converting the pickled (stream of bytes) back into to the original Python object by following the object hierarchy
+
+Ref: http://dataaspirant.com/2017/02/13/save-scikit-learn-models-with-python-pickle/
+http://scikit-learn.org/stable/modules/model_persistence.html
+--------------------------------------------------
+//Dataset Sources
+1. https://www.kaggle.com/datasets
+2. http://archive.ics.uci.edu/ml/index.php
+3. 
+
+---------------------------
+Supervised Machine Learning
+
+The majority of practical machine learning uses supervised learning.
+
+Supervised learning is where you have input variables (x) and an output variable (Y) and you use an algorithm to learn the mapping function from the input to the output.
+
+Y = f(X)
+
+The goal is to approximate the mapping function so well that when you have new input data (x) that you can predict the output variables (Y) for that data.
+------------------------------------------------------------------------------------------
+
+//Unsupervised learning
+
+Unsupervised learning is where you only have input data (X) and no corresponding output variables.
+
+The goal for unsupervised learning is to model the underlying structure or distribution in the data in order to learn more about the data.
+
+These are called unsupervised learning because unlike supervised learning above there is no correct answers and there is no teacher. Algorithms are left to their own devises to discover and present the interesting structure in the data.
+
+Unsupervised learning problems can be further grouped into clustering and association problems.
+
+Clustering: A clustering problem is where you want to discover the inherent groupings in the data, such as grouping customers by purchasing behavior.
+
+Association:  An association rule learning problem is where you want to discover rules that describe large portions of your data, such as people that buy X also tend to buy Y.
+
+Some popular examples of unsupervised learning algorithms are:
+
+k-means for clustering problems.
+Apriori algorithm for association rule learning problems.
+----------------------------------------------------
+Semi-Supervised Machine Learning
+
+Problems where you have a large amount of input data (X) and only some of the data is labeled (Y) are called semi-supervised learning problems.
+
+These problems sit in between both supervised and unsupervised learning.
+
+A good example is a photo archive where only some of the images are labeled, (e.g. dog, cat, person) and the majority are unlabeled.
+
+--------------------------------------------------------------------------------------
+//Clustering
+
+//k-means alogo
+//Animation - http://shabal.in/visuals/kmeans/1.html
+//https://www.naftaliharris.com/blog/visualizing-k-means-clustering/
+[show the demo using above link]
+//k-means details
+The algorithm then proceeds in two alternating parts: 
+In the Reassign Points step, we assign every point in the data to the cluster 
+whose centroid is nearest to it. In the Update Centroids step, we recalculate each 
+centroid's location as the mean (center) of all the points assigned to its cluster. 
+We then iterate these steps until the centroids stop moving, or equivalently until 
+the points stop switching clusters.
+//random initialization trap - selection of initial centroids can change the final outcome
+
+// Selecting the right number of clusters - how many number of clusters would be better - methods used is elbow method
+
+//
+
+//k-means++ is solution for this trap
+// which employes elbow method which calculates wcss
+//wcss - within cluster sum of squares
+//aim is to figure out optimal number of clusters where elbow is created.
+
+//There are other methods for finding the right number of clusters,
+//http://www.sthda.com/english/articles/29-cluster-validation-essentials/96-determining-the-optimal-number-of-clusters-3-must-know-methods/
+"""
+Compute clustering algorithm (e.g., k-means clustering) for different values of k. For instance, by varying k from 1 to 10 clusters.
+
+For each k, calculate the total within-cluster sum of square (wss).
+
+Plot the curve of wss according to the number of clusters k.
+
+The location of a bend (knee) in the plot is generally considered 
+as an indicator of the appropriate number of clusters.
+"""
+
+
+-----------------------------------
+"""
+Very important about noise points
+You can see that DBSCAN produced three groups. 
+Note, however, that the figure closely resembles a two-cluster 
+solution: It shows only 17 instances of label – 1. 
+That’s because it’s a two-cluster solution; the third group (–1)
+ is noise (outliers). You can increase the distance parameter 
+ (eps) from the default setting of 0.5 to 0.9, and it will 
+ become a two-cluster solution with no noise.
+
+The distance parameter is the maximum distance an 
+observation is to the nearest cluster. The greater the value 
+for the distance parameter, the fewer clusters are found 
+because clusters eventually merge into other clusters. The –1 
+labels are scattered around Cluster 1 and Cluster 2 in a few 
+locations:
+
+Near the edges of Cluster 2 (Versicolor and Virginica classes)
+
+Near the center of Cluster 2 (Versicolor and Virginica classes)
+
+"""
+
+
+
+"""
+DBSCAN Details
+
+https://towardsdatascience.com/how-dbscan-works-and-why-should-i-use-it-443b4a191c80
+
+https://www.dummies.com/programming/big-data/data-science/how-to-create-an-unsupervised-learning-model-with-dbscan/
+"""
+
+"""
+Animation
+https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/
+"""
+
+"""
+eps: if the eps value chosen is too small, 
+a large part of the data will not be clustered. 
+It will be considered outliers because don’t 
+satisfy the number of points to create a dense 
+region. On the other hand, if the value that was 
+chosen is too high, clusters will merge and the 
+majority of objects will be in the same cluster.
+The eps should be chosen based on the distance of 
+the dataset (we can use a k-distance graph to find 
+it), but in general small eps values are preferable.
+
+minPoints: As a general rule, a minimum 
+minPoints can be derived from a number of 
+dimensions (D) in the data set, as minPoints ≥ D + 1.
+Larger values are usually better for data sets 
+with noise and will form more significant clusters.
+The minimum value for the minPoints must be 3,
+but the larger the data set, the larger the 
+minPoints value that should be chosen.
+"""
+
+AirBNB dataset
+http://darribas.org/gds15/content/labs/lab_08.html
+
+DBSCAN
+https://www.datascience.com/blog/k-means-alternatives
+
+
+http://www.sthda.com/english/wiki/print.php?id=246

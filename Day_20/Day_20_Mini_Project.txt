@@ -1,0 +1,37 @@
+
+//Advanced code challenges (Need to perform later):
+
+This is the Prostate Cancer dataset.You can read the info file for more
+information about the dataset. We have split the data into a train and test split. You should
+use the test split to evaluate the model. (When training, select the ”Supplied Test set” and
+select the test dataset.
+
+
+Tasks
+(a) Train a unregularized model - Disable the attribute selection, regularisation, and co-linear
+attribute elimination and run the linear regressor. Note down the mean squared error.
+(b) Ridge Regression - We have seen unregularized models till now. Weka implements ridge
+regression model for linear regression which we will try. We have to choose the best
+parameter lambda for ridge regression. In practice, we do this by searching over a range
+of values and see which gives the least cross-validation error. Weka has functions to this
+search too. We use CVParameterSearch in the meta functions, and use it to iterate over
+the ridge parameter(R) of the Linear Regression model. Iterate over 0 - 50 in steps of
+1, use a 5 fold cross-validation. Note down the best value of lambda and corresponding
+error.
+
+
+
+Code Challenge:
+Ridge Regression Assignment 2:
+In this assignment, we will run ridge regression 
+multiple times with different L2 penalties to see 
+which one produces the best fit. 
+
+In particular, we will: 
+• Use Linear Regression and see the results
+• Use Lasso (L1) and see the resuls
+• Use Ridge and see the score
+• Choose best L2 penalty using cross-validation
+• Assess the final fit using test data. 
+
+We will continue to use the House data from previous assignments.

@@ -1,0 +1,264 @@
+
+
+Regression Metrics
+
+"""
+Evaluation Metrics for Regression
+
+- Thus, evaluating our model will help us know how well we're doing with our current selection of Features from the data, hyperparameters, etc. 
+
+    There are three basic evaluation metrics for regression to check the goodness of fit.
+        Mean Absolute Error
+        Root Mean square Error - Evaluating the RMSE and tuning our model to minimize it results in a more robust model
+        R-Square (Residual value)
+
+"""
+
+
+
+#Show the animation using learning rate, cost functions and best fit line
+#https://towardsdatascience.com/epoch-vs-iterations-vs-batch-size-4dfb9c7ce9c9
+
+
+"""
+Regression Notes
+https://blog.minitab.com/blog/adventures-in-statistics-2/regression-analysis-how-do-i-interpret-r-squared-and-assess-the-goodness-of-fit
+https://blog.minitab.com/blog/how-to-choose-the-best-regression-model
+"""
+
+"""
+https://www.listendata.com/2017/03/partial-correlation.html
+"""
+"""
+#Industry applications of the Linear Regression
+#The two primary uses for regression in business are forecasting and optimization. In addition to helping managers predict such things as future demand for their products, regression analysis helps fine-tune manufacturing and delivery processes.
+https://smallbusiness.chron.com/application-regression-analysis-business-77200.html
+"""
+
+"""
+https://medium.com/usf-msds/choosing-the-right-metric-for-machine-learning-models-part-1-a99d7d7414e4
+https://medium.com/usf-msds/choosing-the-right-metric-for-evaluating-machine-learning-models-part-2-86d5649a5428
+https://blog.exsilio.com/all/accuracy-precision-recall-f1-score-interpretation-of-performance-measures/
+"""
+
+"""
+https://www.dataquest.io/blog/understanding-regression-error-metrics/
+"""
+from sklearn import metrics
+
+print metrics.mean_absolute_error(labels_test, labels_pred)
+print metrics.mean_squared_error(labels_test, labels_pred)
+print np.sqrt(metrics.mean_squared_error(labels_test, labels_pred))
+
+print metrics.r2_score(labels_test, labels_pred)
+
+
+
+
+
+
+
+"""
+# how to calculate the MAE
+from sklearn import linear_model
+lm = linear_model.LinearRegression()
+lm.fit(X, sales)
+
+mae_sum = 0
+for sale, x in zip(sales, X):
+    prediction = lm.predict(x)
+    mae_sum += abs(sale - prediction)
+mae = mae_sum / len(sales)
+
+print(mae)
+
+
+"""
+
+"""
+#Calculatiing the MSE
+
+mse_sum = 0
+for sale, x in zip(sales, X):
+    prediction = lm.predict(x)
+    mse_sum += (sale - prediction)**2
+mse = mse_sum / len(sales)
+
+print(mse)
+
+"""
+
+"""
+https://www.myaccountingcourse.com/financial-ratios/r-squared
+"""
+
+
+--------------------------
+Classification Metric
+"""
+Following are the types of Classification Metrics :
+
+    Confusion Matrix
+    Classification Matrix
+    F1 Score
+    Area under ROC curve
+    Classification Report
+    Logarithmic Loss
+"""
+
+"""
+https://medium.com/usf-msds/choosing-the-right-metric-for-machine-learning-models-part-1-a99d7d7414e4
+https://medium.com/usf-msds/choosing-the-right-metric-for-evaluating-machine-learning-models-part-2-86d5649a5428
+"""
+from sklearn import metrics
+fpr, tpr, _ = metrics.roc_curve(labels_test,  labels_pred_proba[:,1])
+auc = metrics.roc_auc_score(labels_test, labels_pred_proba[:,1])
+plt.plot(fpr,tpr,label="data 1, auc="+str(auc))
+plt.legend(loc=4)
+plt.show()
+
+"""
+https://nlpforhackers.io/classification-performance-metrics/
+"""
+
+"""
+positive – we predict the disease is present
+negative – we predict the disease is not present.
+Let’s now define some notations:
+
+TP – True Positives (Samples the classifier has correctly classified as positives)
+TN – True Negatives (Samples the classifier has correctly classified as negatives)
+FP – False Positives (Samples the classifier has incorrectly classified as positives)
+FN – False Negatives (Samples the classifier has incorrectly classified as negatives)
+"""
+
+"""
+Recall or Sensitivity or TPR (True Positive Rate): Number of items correctly identified as positive out of total true positives- TP/(TP+FN)
+Specificity or TNR (True Negative Rate): Number of items correctly identified as negative out of total negatives- TN/(TN+FP)
+Precision: Number of items correctly identified as positive out of total items identified as positive- TP/(TP+FP)
+False Positive Rate or Type I Error: Number of items wrongly identified as positive out of total true negatives- FP/(FP+TN)
+False Negative Rate or Type II Error: Number of items wrongly identified as negative out of total true positives- FN/(FN+TP)
+"""
+#Accuracy
+
+from sklearn.metrics import accuracy_score
+ 
+print accuracy_score(labels_test, labels_pred)
+
+#precision Score/
+"""
+given that the classifier predicted a sample as positive, what’s the probability of the sample being indeed positive?
+"""
+from sklearn.metrics import precision_score
+ 
+# Take turns considering the positive class either 0 or 1
+print precision_score(labels_test, labels_pred, pos_label=0)  
+print precision_score(labels_test, labels_pred, pos_label=1)  
+
+
+#Recall Score/Sensitivity
+"""
+given a positive sample, what is the probability that our system will properly identify it as positive?
+"""
+from sklearn.metrics import recall_score
+ 
+# Take turns considering the positive class either 0 or 1
+print recall_score(labels_test, labels_pred, pos_label=0)  
+print recall_score(labels_test, labels_pred, pos_label=1)  
+
+#f1 Score
+"""
+A measure that combines the precision and recall metrics is called F1-score. This score is, in fact, the harmonic mean of the precision and the recall. Here’s the formula for it:
+2 / (1 / Precision + 1 / Recall)
+"""
+from sklearn.metrics import f1_score
+ 
+# Take turns considering the positive class either 0 or 1
+print f1_score(labels_test, labels_pred, pos_label=0)  
+print f1_score(labels_test, labels_pred, pos_label=1)  
+
+"""
+A convenient shortcut in scikit-learn for obtaining a readable digest of all the metrics is metrics.classification_report
+"""
+from sklearn.metrics import classification_report
+–
+print classification_report(labels_test, labels_pred, target_names=['NO', 'YES'])
+
+#The support is the number of samples of the true response that lie in that class.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_curve, auc, roc_auc_score
+
+
+
+false_positive_rate, true_positive_rate, thresholds = roc_curve(labels_test, classifier.predict(features_test))
+print auc(false_positive_rate, true_positive_rate)
+# 0.857142857143
+print roc_auc_score(labels_test, classifier.predict(features_test))
+# 0.857142857143
+
+
+"""
+http://vision.stanford.edu/teaching/cs231n-demos/linear-classify/
+"""
+
+
+Lasso, Ridge
+??King county house sales data
+https://www.kaggle.com/madislemsalu/predicting-housing-prices-in-king-county-usa
+Attributes
+
+id
+date
+price
+bedrooms
+bathrooms
+sqft_living
+sqft_lot
+floors
+waterfront
+view
+condition
+grade
+sqft_above
+sqft_basement
+yr_built
+yr_renovated
+zipcode
+lat
+long
+sqft_living15
+sqft_lot15
+
+https://www.kaggle.com/jmataya/regularization-with-lasso-and-ridge
+
+"""
+https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-ridge-lasso-regression-python/
+"""
+
+"""
+https://roamanalytics.com/2016/10/28/are-categorical-variables-getting-lost-in-your-random-forests/
+"""
+
+
+
+"""Prostate Cancer dataset"""
+http://www.stat.cmu.edu/~ryantibs/statcomp-F16/lectures/exploratory_data.html
+
+http://members.cbio.mines-paristech.fr/~jvert/svn/tutorials/practical/linearregression/linearregression.R
+

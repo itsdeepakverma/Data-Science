@@ -1,0 +1,483 @@
+https://techburst.io/introduction-to-linear-regression-bd7f834d0255
+
+
+
+1. Define Machine Learning 
+    y = f(x) 
+    
+    y = dependent variable / Labels
+    x = independent variable / Features
+    
+    Traditional Programming Approach
+                  ______________
+                 |              |
+    f----------->|              |
+                 |              |
+                 |              |-----------> y
+                 |              |
+    x----------->|              |
+                 |______________|
+    
+    
+    
+        
+    Machine Learning Programming Approach
+                  ______________
+                 |              |
+    x----------->|              |
+                 |              |
+                 |              |-----------> f
+                 |              |
+    y----------->|              |
+                 |______________|
+    
+    The focus is on finding the mapping function ( Model )
+    Input is the Labels and Features, the system learns to find the model
+
+
+    Example :
+     
+        x = [ 1, 2, 3, 4, 5 ]
+        y = [ 1, 2, 3, 4, 5 ]
+
+    If the value of x is 7, the predict the value of y
+    To Solve this we need to find the model ( mapping function )
+    
+    By seeing the data it seems to be a Linear Relationship
+    If we plot these data on a graph it will draw a straight line
+    
+    import matplotlib.pyplot as plt  
+    
+    plt.scatter(x,y)
+    plt.plot(x,y)
+    
+    If we are able to find the Slope ( Coefficient) and Intercept of the line
+    We can then extend the line to predict any value for a given x value
+    
+    Slope = (2 - 1) / (2 - 1) = 1  ( y2 - y1 )/ (x2 - x1)
+    
+    Intercept = 0 , since the line is passing through the Origin
+     
+    Now apply these in the equation of a line 
+        y = mx + c
+        where,
+        m is the slope
+        c is the intercept
+        
+        y = 1 * x + 0
+        y = x
+        Now if x = 7 , then y = 7    
+
+     coefficient value states that one unit change in feature will have oefficient value change in labels
+             
+
+2. Dataset which has both features and labels present is known as Labelled Dataset.
+   We use Supervised Machine Learning on such dataset for Prediction
+   
+                           Supervised ML ( Prediction )
+                                   /\
+                                  /  \
+                                 /    \
+                                /      \
+                      Regression        Classification
+                         /\
+                        /  \
+                       /    \
+                      /      \
+            Simple LR         Multiple LR
+
+
+3. Analyse the student_scores.csv dataset ( Labelled or Unlabbeled )
+   If Sahil puts 9 hours of efforts in studying,how much marks will he get ?
+   
+   Based on the above prediction we can segregate the labels and features 
+   
+   Hours Studied    =   Independent Variable = Feature
+   Score Achieved   =   Dependent Variable = Label 
+    
+   To Solve such problem, the Algorithm in ML is Linear Regression
+    
+
+4. Import all the libraries required 
+    import pandas as pd  
+    import numpy as np  
+    import matplotlib.pyplot as plt 
+    
+5. Read the student_scores.csv using Pandas Library
+    dataset = pd.read_csv('student_scores.csv')
+
+6. Perform EDA ( Exploratory Data Analysis)    
+    dataset.shape
+    dataset.ndim
+    dataset.head()
+    dataset.describe()
+
+7. Check the data types of all the columns
+    print (dataset.dtypes)
+
+8. Check NaN values in the columns
+    dataset.isnull().any(axis=0)
+    
+9. Lets show the points on the graph to find any relationship
+    dataset.plot(x='Hours', y='Scores', style='o')  
+    plt.title('Hours vs Percentage')  
+    plt.xlabel('Hours Studied')  
+    plt.ylabel('Percentage Score')  
+    plt.show()    
+    
+10. Since the points are all scattered on the graph now, we can inference that
+    the relationship is progressive and linear in nature but we cannot show
+    one single line which can pass through all the points.
+
+11. Analogy is an example for a family to take some decission.
+    Democratic way is to satisfy everyone and move forward.
+    This line which satisfy all the maximum points in such a way is known as
+    BEST FIT LINE
+    
+12. Explain the image ( leastsquares-regression.jpg )
+    Sum of square of vertical distances should be minimum.
+    How to calculate to minimum value is a mathematical problem
+    
+13. Explain the image (LR-Residual.jpg )
+    Vertical distances is also known as Residuals
+    We need to iterate the line and find such a line which has the minimum
+    resiuduals
+
+14. We need to now train the model or find the best fit line or the mapping 
+    function, so that we can calculate the slope and intercept of it, which
+    would help us in predicting the next value
+    
+15. Preparation of the Data
+    Segregate the features and labels
+
+    features = dataset.iloc[:, :-1].values  
+    labels = dataset.iloc[:, 1].values 
+
+16. Now we need to train the model using the Algorithm from Scikit Learn Library
+    from sklearn.linear_model import LinearRegression  
+
+    regressor = LinearRegression()  
+
+17. Model is created using the fit method on the dataset ( features & labels )
+    regressor.fit(features, labels) 
+
+
+18. Since now the Best FIt LIne is created in the model, we can use the slope
+    and intercept
+    
+    print(regressor.intercept_)  
+    print (regressor.coef_)
+
+
+19. If Sahil puts 9 hours of efforts in studying, how much marks will he get ?
+    y = mx + c
+    
+    print (regressor.coef_*9 + regressor.intercept_)
+    [90.46590392]
+
+20. You don't need to calculate again and again using the coefficient and intercept
+    You can use the predict method 
+    
+    print (regressor.predict(9))
+    
+21. Visualize the Best Fit Line
+    Show the best-fit.jpg 
+    Introduce the concept of Actual Value and Predicted Value
+    
+    import matplotlib.pyplot as plt
+
+    # Visualising the  results
+    plt.scatter(features, labels, color = 'red')
+    plt.plot(features, regressor.predict(features), color = 'blue')
+    plt.title('Study Hours and Exam Score')
+    plt.xlabel('Study Hours')
+    plt.ylabel('Exam Score: Marks')
+    plt.show()
+
+22. The points which are away from the line, predictions for those are far from 
+    the actuals.
+    
+
+23. If we swap the features and labels, then how much time we need to study to 
+    get 100 marks.
+    
+24. When there are only one feature in the data then it is known as Univariate 
+    Simple Linear Regression is the Solution for such dataset
+    
+    If there are more than one feature in the dataset, then it is known as Multivariate
+    Multiple Linear Regression is the solution for such dataset
+    
+25. Teacher - Student Example 
+    How will your teacher evaluate your Brain Training / Learning after 
+    he has taught the subject to you ?
+    Solution: Take a test of what has been taught to the students 
+    
+    Let assume that the book by which the Teacher teaches is dataset
+    There are 100 question with 100 Answers
+    
+    Teacher teaches 60Q and 60A randomly from the dataset to students
+    This will get the students brain trained on the concepts
+    Now the teacher takes a test to train the brain.
+    Now 40Q are given to students and students gives 40 Responses 
+    Now the teacher to evalute these 40R will compare with the 40A from his sheet
+    
+    This will give the score of the training, i.e how well the brain was trained 
+    and how well the answers were given
+    
+    Since in this case we have not trained the model with all the 100Q
+    
+    This concept is known as Splitting the dataset into train and test
+     
+    
+                           Splitting the dataset
+                                   /\
+                                  /  \
+                                 /    \
+                                /      \
+                         Features       Labels
+                        /\                   /\
+                       /  \                 /  \
+                      /    \               /    \
+                     /      \             /      \
+             features    features   labels        labels
+             _train      _test      _train        _test
+               60%        40%         60%           40%
+
+   
+    from sklearn.model_selection import train_test_split
+    features_train, features_test, labels_train, labels_test 
+    = train_test_split(features, labels, test_size = 0.2, random_state = 0)
+
+26. Import the library and create the LinearRegression Object and fit 
+ 
+    from sklearn.linear_model import LinearRegression
+    regressor = LinearRegression()
+    regressor.fit(features_train, labels_train)
+
+27. Now find the prediction  
+    labels_pred = regressor.predict(features_test)
+
+28. Compare the predicted labeles with the labels_test
+
+    import pandas as pd
+    df = pd.DataFrame({'Actual': labels_test, 'Predicted': labels_pred})  
+    print (df)
+
+    On comparision if both the values are same/similar then you have a good
+    model trained
+
+29. Thumb Rule
+    80% to Train and 20% for Testing 
+    
+30. Gradient Descent is that Algorithm to find the minimum value of the vertical 
+    distances of the points.
+    
+    Other is Newton Method
+    
+31. Gradient Descent is to optimize the equation for which the square of vertical distance is least
+    = Cost Function 
+    = Loss Function 
+    
+32. Explain the random state variable
+    Set to some other value and visualise the label_test
+    Now run the code again and again to check that the value does not changes
+    
+    Now set the random value to another number
+    The label_test will now change its value.
+    Now run the code again and again to check that the value does not changes
+ 
+33. Multiple Linear Regression
+    
+34. Analyse the dataset of Salary_Classification.csv
+    Predict the salary of Manas who works in the Development Department,
+    spent 1150 hours and has 3 Certificate and 4 Years Experience
+    
+    ++++++++++++++++++++
+    |Department        |
+    |WorkedHours       |
+    |Certification     |
+    |YearsExperience   |
+    |Salary            |
+    ++++++++++++++++++++
+    
+35. Import and Read the dataset 
+
+    import numpy as np
+    import pandas as pd
+    dataset = pd.read_csv('Salary_Classification.csv')
+
+35. Seperate the features and labels
+
+    features = dataset.iloc[:, :-1].values
+    labels = dataset.iloc[:, -1].values
+
+
+36. Exploratory Data Analysis
+
+    #Check if any NaN values in dataset
+    dataset.isnull().any(axis=0)
+
+    #check data types for each column
+    print (dataset.dtypes)
+
+37. Some of the values cannot be shown in the Variable Explorer
+    Since some column has String or Object as the data type
+    These values are known as Categorical Data    
+    
+38. Convert Categorical Data to Numeric Data (LabelEncoding)
+    Show the image for LabelEncoding of One_hot_encoding_colors.png
+    
+    from sklearn.preprocessing import LabelEncoder
+    labelencoder = LabelEncoder()
+    features[:, 0] = labelencoder.fit_transform(features[:, 0])
+
+    After Label Encoding, Unique values in the Development Columns are converted
+    into some numerical values in order
+    
+    Develoopment = 0
+    Testing      = 1
+    UX           = 2
+    
+    
+39. Since the Label Encoding has generated the values in some order, the ML Algo
+    might understand that there is some priority in the values
+    zero is lowest priority and 2 is highest priority
+    
+40. We need to handle this problem of Order Generation of the Label Encoded 
+    and tell that there is no order for the values.
+
+41. To suppress or solve this problem is called as One Hot Encoding 
+    Show the image of One_hot_encoding_week_days.png
+    
+42. One Hot Encoding, finds the unique values in the columns and creates 
+    columns for it and fills with 0 or 1 values to denote it
+    
+    from sklearn.preprocessing import OneHotEncoder
+    onehotencoder = OneHotEncoder(categorical_features = [0])
+    features = onehotencoder.fit_transform(features).toarray()
+    
+43. Pandas get_dummies also does the same thing 
+    dataset= dataset.get_dummies(dataset)
+    
+44. If there was a Qualification Column with unique values ( B.Tech, M.Tech,Ph.D)
+    Then after LabelEncoding, OneHotEncoding was not required, since we need the
+    Order     B.Tech < M.Tech < Ph.D
+
+45. There is another issue in the data and that is known as Dummy Trap.
+    If we know the 2nd and 3rd COlumns value, we can know by default the 1st Column values
+    So technically the 1st Column data is redundant and we can remove this column itself
+    Otherwise predictions would be poor
+
+46. To achieve Singularity we need to remove the first column for the dummy trap
+    features = features[:, 1:]
+    
+47. Splitting the dataset into the Training set and Test set
+    from sklearn.model_selection import train_test_split
+    features_train, features_test, labels_train, labels_test 
+    = train_test_split(features, labels, test_size = 0.2, random_state = 0)
+
+48. Fitting Multiple Linear Regression to the Training set
+    from sklearn.linear_model import LinearRegression
+    regressor = LinearRegression()
+    regressor.fit(features_train, labels_train) 
+
+49. To see the value of the intercept and slop calculated by the linear regression algorithm 
+    for our dataset, execute the following code.
+
+    print(regressor.intercept_)  
+    print (regressor.coef_)
+    
+    [1]
+    [5]
+
+50. Predict new values for our problem statement
+    Predict the salary of Manas who works in the Development Department,
+    spent 1150 hours and has 3 Certificate and 4 Years Experience
+
+    ['Development',1150, 3, 4 ]
+    Predict gives error of 2D Array, now to reshape (1,4)
+
+    # Development is replaced by 1,0,0     
+    [1,0,0,1150, 3, 4 ]
+    Cannot cast array data from..., model trained on 5 columns
+
+    # 0,0 to remove dummy trap
+    [0,0,1150, 3, 4 ]
+    
+51. If there are many unique values, how do we come to know the encoding for it
+    le = labelencoder.transform(['Development'])
+    ohe = onehotencoder.transform(le.reshape(1,1)).toarray()
+    x = [ohe[0][1],ohe[0][2],1150,3,4]
+    x = np.array(x)
+
+51. Now to Predict
+    regressor.predict(x.reshape(1, -1))
+    
+52. How good is your Model Trained, we need to calculate the score
+
+    Score = regressor.score(features_train, labels_train)
+    Score = regressor.score(features_test, labels_test)    
+    
+    We are trying to get the score on training data and then on testing data
+    
+    Overfitting
+        If the training score is GOOD and Testing score is BAD
+    
+    Underfitting
+        If the training score is BAD  and Testing score is BAD
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+            
+            

@@ -1,0 +1,176 @@
+Python Basics - Week1
+JSON, REST APIs, Scrap, database, GitHub, Bitbucket, JIRA
+NUmpy, Pandas, Matplotlib, BI
+--------------------
+Key Machine Learning Terminology
+
+Descriptive - What Happened
+Predictive - What will happen
+Prescriptive - What to do 
+
+
+Gang of Four (Yann Lecun, Geoffrey Hilton, Yoshua Bengio, Andrew Ng )
+    CoFounder of Coursera and Baidu (Andrew Ng )
+    How to boost GDP of India with Prime minister  ?
+    Father of Machine Learning ( Geoffrey Hilton )
+    Head of Google AI team since 2001
+    Research Student of Hilton (Yann Lecun )
+    Heading Facebook AI Team ( Yann Lecun )
+    Father of Deep Learning
+    Yoshua Bengio is purely Academician, writes Books and Papers
+    
+
+Define Artificial Intellegence ( AI )
+    Any machine which can behave like humans for a specific task
+    Narrow AI
+    Generalized AI
+    There are two ways to achieve it ( Machine Learning and Deep Learning )
+    Deep Learning is a subset of Machine Learning using Neueral Networks
+
+
+Define Data Analytics
+    Inference from past Data
+
+Define Machine Learning
+    Based on past data if we can predict
+    
+    
+Define BigData
+    If the dataset is big, which cannot be processed on your local system
+    Distributed computation or Parallel Computing on a cluster is the solution 
+    to solve the Big Data Problem
+    Map and Reduce is the base concept developed by an India in Google
+    Frameworks - Apache Hadoop and Spark and now Datbricks
+
+
+Define Streaming Analytics
+    When the data is changing at runtime, like Facebbok Like and Comments
+    Kafka, Solr and Lucene 
+
+
+Define Data Science 
+    Anything around data is known as data science
+    Dr. D G Patil, First Data Scientist in Obama Administration.
+    He coined the word Data Scientist 
+    Sexiest Job in the world is of a Data Scientist 
+    
+
+Define Machine Learning
+    y = f(x) 
+    y is output variable / dependent variable / labels 
+    x is input variable / independent variable / features describing the data
+    f is known as a mapping function / Model 
+    ML = Process of training the Model for prediction on never-before-seen dataset
+    
+
+    In a traditional system you have x and the mapping function f()
+    and you generate the values of y
+
+    In a ML system, you have x and y and based on that we find the mapping function f()
+    Once you know the mapping function, we can then give new x values which will predict y
+    
+    
+    In Machine Learning 
+        x = Feature
+        y = Label / Response / Target
+        
+    f(newx) ==> y - prediction
+    x = [1,2,3,4,5] {6}
+    y = [1,2,3,4,5] ??
+
+    Prediction can be of two types 
+    1. Continuous values ( Regression Model )
+    2. Discrete Values   ( Classification Model )
+
+
+
+Define Dataset
+    If both feature(x) and label(y) is present in the data, it is known as Labelled Dataset
+    student_scores.csv
+    Supervised ML works on Labelled dataset for predictions
+    
+    If only feature (x) is present and label (y) is missing in a data, its a non labelled dataset
+    Unsupervised ML works on unlabelled data.
+    Predictions are not possible, only groups can be created ( clustering )
+    
+
+    Supervised ML ( Predictions ) has two branches Regression and Classification 
+    Regression- 
+    Classification kNN, 
+    
+    Unsupervised ML ( Clustering ) has two branches Clustering and Association 
+    Clustering - kmeans
+    Association - Apriori
+    
+    Will netaji WIN or LOOSE in the election is an example of Classification 
+    With how many votes is an example of Regression 
+    
+    
+    
+    Give ( Classification )Example of Spam Detection of Email to explain the below concept
+    In the spam detector example, the features could include the following:
+    (feature)          words in the email text
+    (feature)          sender's address
+    (feature)          time of day the email was sent
+    (feature)          email contains the phrase "one weird trick."
+    (label )           Whether the email is SPAM or HAM
+
+    Another ( Regression )Example is the Housing Prices in Jaipur
+    housingMedianAge            (feature)
+    totalRooms                  (feature)
+    totalBedrooms               (feature)
+    medianHouseValue            (label)
+
+
+
+    Scikitlearn (sklearn) is the library for ML Algorithms
+    
+    Keras based on Tensorflie is the library for DL Algorithms
+    Another library is PyTorch from Facebook/Uber
+    
+    
+
+Define Deep Learning
+    When the dataset is big we would the neural networks to solve it
+    Supervised Deep Leaarning ( ANN, RNN, CNN )
+    UnSupervised Deep Leaarning ( SOM, AutoEncoders ) Self Organising Maps 
+    SOM is used for Clustering, AutoEncoders is used for developing Recommendation Systems
+
+
+Define Reinforcement Learning
+    In Reinforcement Learning ( RL )
+    In RL you don't collect examples with labels.
+    Imagine you want to teach a machine to play a very basic video game and never lose. 
+    You set up the model (often called an agent in RL) with the game, and you tell 
+    the model not to get a "game over" screen. 
+    During training, the agent receives a reward when it performs this task, 
+    which is called a reward function. With reinforcement learning, 
+    the agent can learn very quickly how to outperform humans. 
+
+    However, designing a good reward function is difficult, and RL models are less stable 
+    and predictable than supervised approaches.
+
+
+Define NLP
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

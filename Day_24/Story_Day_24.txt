@@ -1,0 +1,283 @@
+1 Dimension  = 1 Feature  in the dataset 
+n Dimension  = n Features in the dataset
+
+
+Dimension Reduction concept is to reduce the number of features from the dataset 
+
+We hvae used this concept earlier, to find the important features using the backward Elimination 
+technique based on the p value concept > 5
+Only experience feature was important to decide Salary and we had converted 4D to 1D
+
+Forward Elimination is also a technique similar to Backward Elimination 
+but include one feature by one in increment mode if it affects or has weightage 
+
+
+There are 2 more techniques for Dimension Reduction 
+    1. Factor Analysis
+    2. PCA
+
+In PCA only take Primary or principal features and remove others
+where its assume m is the original dimension of the dataset 
+and k is the reduced dimension of the dataset 
+k < m
+
+There is always loss when we convert the data from higher dimension to lower dimension 
+
+It reduces the size of the space which improves the performance of the model
+
+Reduces the risk of overfitting
+Algo runs faster when dimension is less
+Simplifies the dataset, facilititates description, visualisation and insight
+
+PCA in everyday, we take photos/selfie from the camera, we are converting 
+from 3D world to 2D printable photo
+
+Give example of 2 eyes of human beging to find the depth, since with one eye we can only get width and height
+
+
+Explain the Webpage 
+http://www.lauradhamilton.com/introduction-to-principal-component-analysis-pca
+
+
+Lets draw the  points on xy plane where x axis is feature 1 and y axis is feature 2 and 
+lets denote with x1 and x2 respectively 
+
+Fundamentals of x axis, where y value is zero, i.e on x axis there is only varinace in x1 feature and no variance of x2 feature
+
+Fundamentals of y axis, where x value is zero, i.e on y axis there is only varinace in x2 feature and no variance of x1 feature
+
+If we draw a line at 45 degree, then it represents the line which has collective max changes of x1 and x2 feature = max_variance
+
+Lets draw a 90 degree projection of all the points on the max variance line
+
+Focus on all the new points
+
+Lets assume that the line is new x axis, then all points are on the x axis and y is zero, that is it has only x1 feature and no x2 feature
+
+So now we have 1D data converted from 2D in a new coordinate system
+
+There is a loss in the new coordinate system 
+
+Since all dimension are orthogonal to each other, we draw a nother line known as 2nd Principal Orthogonal
+
+Now there is no loss, only change in the coordinate system
+
+Eigen Vector is the 1st Principal Line
+Eigen Values is the 2nd Prinipal Line
+
+Open Day_24_Demo_ML_PCA.py
+
+Explain the dataset, label is the customer categorories ( 1,2,3)
+if new wine is launch, which customer which category of customer like it
+
+Seperate out features and labels
+
+Apply Standard Feature Scaling
+
+13 Dimension Data to 2 Dimension dataset 
+
+Convoluton of 13 D data, if has not removed any features, 
+but have created two new features PC1 and PC2 which has some weightage of all the 13 features
+
+Apply to both the train and test dataset
+
+pca.explained_variance ration shows that weightage 
+
+36% part of new feature PC1
+19% part of new feature PC2
+
+55% is reatined but 45% is loss
+
+Apply LogisticRegression for classification 
+
+Confusion Matrix to evalute, only 1 case got wrong
+
+df_pca shows the analysis and individual weightage 
+
+
+
+k Fold Cross validation 
+
+Score Concept for Regression and Classification 
+
+This is not full proof, since its based on test and train and which is based on randonmly generated on state value
+
+if the randon state value is not set for all the students and if they all generate the score, they all will be different
+
+To check the performance of the model we use new mechanics 
+
+k fold Cross Validation 
+
+
+Lets assume 
+            dataset = [[1],[2],[3],[4],[5]] 
+                            /   \
+                           /     \
+                          /       \
+                    train          test
+           [[1],[2],[3],[4]]        [[5]] 
+
+Calculate Score = s1
+
+
+
+
+            dataset = [[1],[2],[3],[4],[5]] 
+                            /   \
+                           /     \
+                          /       \
+                    train          test
+           [[1],[2],[3],[5]]        [[4]] 
+
+Calculate Score = s2
+
+
+            dataset = [[1],[2],[3],[4],[5]] 
+                            /   \
+                           /     \
+                          /       \
+                    train          test
+           [[1],[2],[4],[5]]        [[3]] 
+
+Calculate Score = s3
+
+
+
+            dataset = [[1],[2],[3],[4],[5]] 
+                            /   \
+                           /     \
+                          /       \
+                    train          test
+           [[1],[5],[3],[4]]        [[2]] 
+
+Calculate Score = s4
+
+
+
+            dataset = [[1],[2],[3],[4],[5]] 
+                            /   \
+                           /     \
+                          /       \
+                    train          test
+           [[5],[2],[3],[4]]        [[1]] 
+
+Calculate Score = s1
+
+
+                 s1+s2+s3+s4+s5
+Average Score = ------------------
+                       5
+
+This would be a good score, here k=5 which is the fold or iterations
+
+
+open
+https://yihui.name/animation/example/cv-ani/
+
+default k = 10
+
+k_fold_cross_validation_Sample_Code.py
+
+Explain Line by Line
+
+
+
+
+
+
+
+
+
+
+
+
+1. https://www.analyticsvidhya.com/blog/2016/03/practical-guide-principal-component-analysis-python/
+
+2. http://sebastianraschka.com/Articles/2014_pca_step_by_step.html
+
+3. https://plot.ly/ipython-notebooks/principal-component-analysis/
+
+4. http://blog.districtdatalabs.com/principal-component-analysis-with-python
+
+5. http://support.minitab.com/en-us/minitab/17/topic-library/modeling-statistics/multivariate/principal-components-and-factor-analysis/what-is-pca/
+
+
+
+What is PCA?
+// Dimensionality reduction technique
+
+Principal components analysis is a procedure for identifying a smaller number 
+of uncorrelated variables, called "principal components", from a large set of data. 
+The goal of principal components analysis is to explain the maximum amount of variance 
+with the fewest number of principal components. Principal components analysis is 
+commonly used in the social sciences, market research, and other industries that use large data sets.
+
+Principal components analysis is commonly used as one step in a series of analyses. 
+You can use principal components analysis to reduce the number of variables and 
+avoid multicollinearity, or when you have too many predictors relative to the number of observations.
+
+//From m independent variables of your dataset, PCA extracts p<= m new independent 
+variables that explain the most the variance of the dataset, regardless of the dependent variable.
+
+//The fact that DV is not considered, makes PCA an unsupervised model.
+
+---------------------------------------------------------------------------
+
+//Feature scaling must be applied when dealing with PCA problem.
+// Apply PCA after preprocessing and before the model building.
+
+-----------------------------------------------------
+//Challenges with high dimensional data
+
+Datasets that have a large number features pose a unique challenge for machine learning analysis. 
+We know that machine learning models can be used to classify or cluster data in order to predict future events. 
+However, high-dimensional datasets add complexity to certain machine learning 
+models (i.e. linear models) and, as a result, models that train on datasets 
+with a large number features are more prone to producing error due to bias.
+
+Principal Component Analysis (PCA) is a dimensionality reduction technique used 
+to transform high-dimensional datasets into a dataset with fewer variables, 
+where the set of resulting variables explains the maximum variance within the dataset. 
+PCA is used prior to unsupervised and supervised machine learning steps to 
+reduce the number of features used in the analysis, thereby reducing the likelihood of error.
+
+
+
+Ref:
+https://www.analyticsvidhya.com/blog/2015/07/dimension-reduction-methods/
+https://en.wikipedia.org/wiki/Dimensionality_reduction
+
+———
+Most important Reference
+Feature extraction technique
+
+http://www.lauradhamilton.com/introduction-to-principal-component-analysis-pca
+
+http://setosa.io/ev/principal-component-analysis/
+
+
+
+
+
+
+"""
+import seaborn as sns
+
+sns.heatmap(np.log(pca.inverse_transform(np.eye(X_train.shape[1]))), cmap="hot", cbar=False)
+
+plt.semilogy(pca.explained_variance_ratio_, '--o')
+
+
+plt.semilogy(pca.explained_variance_ratio_.cumsum(), '--o');
+"""
+
+"""
+http://setosa.io/ev/principal-component-analysis/
+http://www.lauradhamilton.com/introduction-to-principal-component-analysis-pca
+https://stats.stackexchange.com/questions/229092/how-to-reverse-pca-and-reconstruct-original-variables-from-several-principal-com
+http://jotterbach.github.io/2016/03/24/Principal_Component_Analysis/
+"""
+"""
+https://stackoverflow.com/questions/22984335/recovering-features-names-of-explained-variance-ratio-in-pca-with-sklearn
+"""
+

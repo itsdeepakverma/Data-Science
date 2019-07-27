@@ -1,0 +1,231 @@
+
+
+Introduce the Medium Blogging Concept, Github and LinkedIn for Hiring / Internship
+
+Association is related to Retail / E Commerce business
+
+Give Example of Amazon / Flipkart / Myntra, NetFlix - 
+Suggestion / Recommendations comes at the bottom, they are different to different users.
+
+Define the keyword Transaction in Ecommerce 
+
+When person buys item X, they also buy item Y, that means that X is associated to Y
+
+Market Basket Analysis is the right term for Association 
+
+//Lets understand Association of inventory items at the stores to increase the 
+sales and revenue
+When we go grocery shopping, we often have a standard list of things to buy. 
+Each shopper has a distinctive list, depending on one’s needs and preferences. 
+A housewife might buy healthy ingredients for a family dinner, 
+while a bachelor might buy beer and chips. 
+Understanding these buying patterns can help to increase sales in several ways. 
+If there is a pair of items, X and Y, that are frequently bought together:
+
+1. Both X and Y can be placed on the same shelf, so that buyers of one item would be 
+prompted to buy the other.
+2. Promotional discounts could be applied to just one out of the two items.
+3. Advertisements on X could be targeted at buyers who purchase Y.
+4. X and Y could be combined into a new product, such as having Y in flavors of X.
+
+
+While we may know that certain items are frequently bought together, 
+the question is, how do we uncover these associations?
+
+Besides increasing sales profits, association rules can also be used in other fields. 
+In medical diagnosis for instance, understanding which symptoms tend to co-morbid 
+can help to improve patient care and medicine prescription.
+
+It helps in targetted promotions
+
+Define ticket size for a transaction
+
+Inventory of a retial store can be managed better if we know the association between 2 items
+
+If we are discounting on both item X and Y, since if they are associated we can remove the discounting on 
+both the items, since we know that when person buys X, he is likely to buy Y also 
+or we can give a combined discount by clubbing both the items X and Y
+
+X  is known as a base item 
+Y is known as Supported Item
+
+How Market Basket Analysis is performed ?
+
+Algorithm to perform Market Basket Analysis is known as Apriori 
+names comes from prior keyword
+
+
+Association Rule Analysis
+Association rules analysis is a technique to uncover how items are associated to each other. 
+There are three common ways to measure association.
+
+How Apriori works or fundamental ?
+    1. Support
+    2. Confidence
+    3. Lift
+
+
+Support 
+This says how popular an itemset is, as measured by the proportion of transactions in which an itemset appears. 
+
+Show image1_Apriori.jpg
+
+In Table, the support of {apple} is 4 out of 8, or 50%. 
+
+The Support {beer} is 6 out of 8, or 75%
+
+
+Itemsets can also contain multiple items. 
+For instance, the support of {apple, beer, rice} is 2 out of 8, or 25%.
+
+It does not worry for the quanity of the item
+
+If you discover that sales of items beyond a certain proportion tend to have a 
+significant impact on your profits, you might consider using that proportion as 
+your support threshold. You may then identify itemsets with support values above 
+this threshold as significant itemsets.
+
+
+Confidence
+
+This says how likely item Y is purchased when item X is purchased, 
+expressed as {X -> Y}. This is measured by the proportion of transactions with item X, 
+in which item Y also appears. 
+In Table 1, the confidence of {apple -> beer} is 3 out of 4, or 75%.
+
+show image2_apriori.jpg
+//confidene_measure
+
+                               support{apple,beer}
+confidence{apple-->beer} =--------------------------------
+                           support{apple} * support{beer}
+
+What if Y is a popular item, then this logic fails
+75% confidence is very HIGH value 
+
+
+One drawback of the confidence measure is that it might misrepresent the 
+importance of an association. 
+This is because it only accounts for how popular apples are, but not beers. 
+If beers are also very popular in general, there will be a higher chance that a 
+transaction containing apples will also contain beers, thus inflating the confidence measure. 
+To account for the base popularity of both constituent items, we use a third measure called lift.
+
+
+Lift
+This says how likely item Y is purchased when item X is purchased, while controlling for how popular item Y is. 
+In Table 1, 
+the lift of {apple -> beer} is 1,which implies no association between items.    ( Neutral Association )
+A lift value greater than 1 means that item Y is likely to be bought if item X is bought, ( Positive Assocition )
+while a value less than 1 means that item Y is unlikely to be bought if item X is bought. ( Negative Association )
+
+show image3_apriori
+
+Take example if Aman and Aprrov taking a decission to join Forsk for Summer Training
+and explain Neutral, Positive and Negative Association 
+
+Apriori Algorithm
+The apriori principle can reduce the number of itemsets we need to examine. 
+Put simply, the apriori principle states that if an itemset is infrequent, 
+then all its subsets must also be infrequent. 
+This means that if {beer} was found to be infrequent, 
+we can expect {beer, pizza} to be equally or even more infrequent. 
+So in consolidating the list of popular itemsets, we need not consider {beer, pizza}, 
+nor any other itemset configuration that contains beer.
+
+//two ways for apriorri
+1. Finding itemsets with high support
+2. Finding item rules with high confidence or lift
+
+Finding rules with high confidence or lift is less computationally taxing 
+once high-support itemsets have been identified, 
+because confidence and lift values are calculated using support values.
+
+Introduce the concept of Recommendation Engine ? 
+Give example of Netflix
+Tool - Collaborative Filtering
+LightFm / Surprise Library 
+
+
+
+open Day_23_apriori.py file
+
+Explain the Market_Basket_Optimisation.csv 
+
+The data we have is over 1 week (7 days)
+
+Column names of the first row is missing, header - None
+
+Apriori Algo is missing in the Sklearn library 
+
+UCI Repository Introduction 
+
+Where to download the library
+https://pypi.python.org/pypi/apyori/1.1.1
+
+apyori.py is the source code where the algo is implemented
+and there is a function name apriori within that module which does that work
+
+from apyori import apriori
+
+Understand the arguments of apriori function 
+
+The first argument is the transaction, which is a Bigger list and contains smaller list 
+
+Now write code to read all the data and create the list of list ( transaction ) 
+
+
+
+**kwargs concept if key, value pairs for variable number of arguments for a function 
+
+How to calculate min_support
+min support - product is purchased atleast 3 times in a days
+so support should be: 3*7/7500 ~ .003
+
+
+Similarly calculate if item is bought 5 times a day
+
+How to calculate min_confidence
+If item X is 100 times a day, then item Y is 25 times a day 
+
+Similarly lift value should be HIGH 
+
+Introduce the concept of generators ( Laxy )
+
+
+results has 30 associations  len(results)
+
+On the console 
+results[0]
+
+results[0].support 
+results[0][1]  --> support
+
+results[2][0][2]   --> Confidence
+results[2][0][1]   --> Lift
+
+
+results[0].ordered_statistics
+results[0][-1]   ---> confidence
+results[0][-2]   ---> Lift
+
+
+//References
+1. http://software.ucv.ro/~cmihaescu/ro/teaching/AIR/docs/Lab8-Apriori.pdf
+2. http://www.kdnuggets.com/2016/04/association-rules-apriori-algorithm-tutorial.html
+3. https://www.slideshare.net/INSOFE/apriori-algorithm-36054672
+4. http://auburnbigdata.blogspot.in/2013/02/an-example-of-apriori-algorithm.html
+5. https://www.analyticsvidhya.com/blog/2014/08/visualizing-market-basket-analysis/
+6. https://github.com/yangzk/Apriori-Visualization
+
+
+
+
+
+
+
+
+
+ 
+
+

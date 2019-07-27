@@ -1,0 +1,566 @@
+
+1.                        Supervised ML ( Prediction )
+                                   /\
+                                  /  \
+                                 /    \
+                                /      \
+                      Regression        Classification
+                      /\                             /\
+                     /  \                           /  \
+                    /    \                         /    \
+                   /      \                       /      \
+        Simple LR     Multiple,            Logistic Reg   kNN
+                      Polynomial
+                      
+k nearest Neighbours
+                      
+
+2. Give examples of classifications 
+       WIN / LOOSE
+       YES / NO     
+       LATE / ON TIME
+                        
+
+3. We have a dataset, where we have the hours studied by the student and status
+   whether he PASSED or FAILED.
+   
+   HOURS = [0.50,0.75,1.00,1.25,1.50,1.75,2.00,2.25,2.50,2.75,3.00,3.25,3.50,3.75,4.00,4.25,4.50,4.75,5.00,5.50]
+   PASS  = [0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1]
+
+4. Lets scatter these point in a graph    
+   If the student has studied less than 4 hours, he FAILED
+   If the student has studied for more 2 hours, he PASSED                       
+   Some students who studied between 2 - 4 hours have PASSED and FAILED also
+   
+5. Lets try to Apply Linear Regression
+    
+    from sklearn.linear_model import LinearRegression  
+    regressor = LinearRegression()  
+    regressor.fit(np.array(HOURS).reshape(-1,1), np.array(PASS).reshape(-1,1)) 
+
+6. Lets Visualize the Best Fit Line
+
+    import matplotlib.pyplot as plt
+
+    # Visualising the  results
+    plt.scatter(HOURS, PASS, color = 'red')
+    plt.plot(HOURS, regressor.predict(np.array(HOURS).reshape(-1,1)), color = 'blue')
+    plt.title('Study Hours and Exam Score')
+    plt.xlabel('Study Hours')
+    plt.ylabel('Exam Score: Marks')
+    plt.show()
+
+   It shows a Best Fit Line which is a straight line and its value can be 
+   negative ( less than 0 ) and positive ( greater than 1 )
+    
+   For certain x value y will be predicted in some number.(Continuous) 
+
+   Which contradicts the problem statement assumption,
+   Since the student can either PASS or FAIL
+    
+   Linear Regression is not the right way to solve such problem
+   We need another algorithm which can predict either 0 or 1
+   Such problems can be solved using the Logistic Regression
+   
+7. Show the image linear_vs_logistic_regression.jpg
+   
+   Draw the Straight linein such a way that the line is twisted and tends to
+   0 at one end and tends to 1 on the another end.
+   So conceptually it has only 2 values either 0 or 1
+
+   Logistic Regression gives probability
+   This curve is also known as Sigmoid Curve
+   
+   This is known as probablity curve
+   probability < .5 then its 0
+   probability > .5 then its 1
+   
+      
+8.  Resources for dataset  
+    UCI Repository
+    Kaggle.com
+    HackerEarth.com
+    HackerRank.com
+    MachineHack.com
+    data.gov.in
+    world bank site
+    Analyticsvidhya.com
+    kdnuggets.com
+    
+    
+9. Study the dataset for coronary heart disease (CHD) in South Africa.
+   Heart_Disease.csv
+   
+   heart = pd.read_csv('Heart_Disease.csv', sep=',', header=0)  
+    heart.head()
+
+    labels = heart.iloc[:,9].values 
+    features = heart.iloc[:,:9].values
+
+    # Splitting the dataset into the Training set and Test set
+    from sklearn.model_selection import train_test_split
+    features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size = 0.25, random_state = 0)
+   
+   All the columns except the last are the features
+   The last column is the label
+   
+   We are not interested in the column name, since ML algo works on magnitude
+   of the values and it does not matter the column names or the unit of the value
+   
+   After visualizing the data in the Variable Explorer
+   It seems that the data in different columns are in different value ranges
+   Some are in High range and some are in lower range
+   Algo internally treats columns as low priority and higher range as high priority
+   
+   We need to have equal weightage for all the columns
+   We need to transform the data, since there are lot of variation in the data
+   range in the column
+   
+   We need to bring them in the same scale or range 
+   This process is known as Feature Scaling
+
+10. Analogy to explain the concept of Feature Scaling
+    Data Structure Teacher takes class test out of 100 marks
+    C teacher takes class test out of 10 marks.
+    We need to announce now the combined marks
+    What would be solution 
+    
+11. Solution
+    Either scale 100 marks on the scale of 10
+    or 10 on the scale of 100 marks, then we can combine both the marks and 
+    announce the result
+    
+12. Feature Scaling in Machine Learning can be done in 2 ways
+    a) Min Max Scaling
+    b) Standard Scaling
+    
+13. Standard Scaling
+    It is applied on individual columns
+    Mean and Standard Deviation is calculated first 
+    then  ( x - mean) / sd
+    
+    After Standard Scaling the data becomes Normally Distributed ( Bell Curve)
+    Also mean becomes 0 and sd = 1
+    Also the values are spread between positive and negative values
+    
+    Dummy variable values also need to be feature scaled
+    Feature Scaling is not only for Logistic Regression, its algo agnostic
+
+    
+14. MinMax Scaling
+    ( x - min ) / (max - min )
+    After MinMax scaling the values chnages into range ( 0 to 1)
+    Will NOT be normally distributed data and no bell curve
+    We will apply MinMax Sclaing in Deep Learning
+    
+15. Apply the Feature Scaling using StandScaler class on train and test data
+
+    from sklearn.preprocessing import StandardScaler
+    sc = StandardScaler()
+    features_train = sc.fit_transform(features_train)
+    features_test = sc.transform(features_test)
+
+
+16. Visualise the data in the Variable Explorer to verify 
+
+17. Why do we use fit and transform in training data, but only transform for testing data
+    Since we have already fit on training data, the algo has already calculated 
+    the mean and standard deviation.
+    So when using testing data we do not need to fit and transform, only transform will do
+    
+     inverse_transform function can be used to bring back the data
+     
+18. Now Create object of LogisticRegression and fit_transform
+    from sklearn.linear_model import LogisticRegression
+    classifier = LogisticRegression()
+    classifier.fit(features_train, labels_train)
+
+
+19. Calculate Class Probabilities
+    This will give two values, Probability of Failing and Passing
+    probability = classifier.predict_proba(features_test)
+
+20. Predicting the test labels
+    labels_pred = classifier.predict(features_test)
+    This gives only 1 or 0 thats why it is also known as Binary Classification
+
+21. Now compare the labels_test with labels_pred to find the score of the training
+
+    There are 4 possible combination 
+    
+    1) 
+        Predicted = 1
+        Actual    = 1
+    
+    2) 
+        Predicted = 2
+        Actual    = 2
+    
+    3) 
+        Predicted = 2
+        Actual    = 1
+    
+    4) 
+        Predicted = 1
+        Actual    = 2
+    
+    ------------------
+         |  1 |  2 | (Predicted)
+    ------------------
+      1  | 68 |  9 |
+    ------------------
+      2  | 19 | 20 |
+    ------------------
+
+    This information is represented as Confusion Matrix or Error Matrix.
+
+22. How score is calculated 
+        score = (68 + 20) / ( 68 + 20 + 9 + 19 )
+    
+    No algo will give 100% score, if you get that means there is some problem in
+    the dataset.
+
+
+23. Show the image knn_class_prediction.jpg
+    The model has been trained on the training data
+    Points has been scattered on the plot
+    Where    
+    Label is either A | B
+                    0 | 1
+                Blue  | Red 
+
+    We now need to predict the category of * ( STAR ) as a test case.
+    Whether it falls in category (BLUE)A or B (RED)
+   
+    Analogy, Some of the friends of Manas are saying that they are going for  a 
+    Movie, but some of the friends are not going for a Movie, since they have back papers.
+    
+    What would be Manas decission.
+    
+    Manas decission would be influenced by the people near him.
+    
+    How to solve using kNN ( k Nearest Neighbours) ?
+    
+    Find the distance of the 3 nearest data points. ( k = 3)
+    It has 2 RED and 1 BLUE.
+    Manas goes with the majority, so he goes for the movie
+    
+    Now take k = 5, 7, 9 etc (ODD) and find the nearest points which affect the 
+    decission. We take ODD numbers becoz in that case there would never be a case of 
+    tie.
+    
+
+24. Finding distance between 2 points is a Mathematical Challenge.
+    
+        P1 = ( x1, y1 )
+        P2 = ( x2, y2 )
+        
+        d = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        
+          = Arial Distance or Eucliedean Distance
+    
+    There is another way to find the distance
+    
+        D = |x2 - x1| + |y2 - y1|
+          
+          = Manhattan Distance
+          
+    Both Distances are calculated from Minkowski Distance formula 
+    
+    p = 1 ( Manhattan Distance )
+    p = 2 ( Euclidean Distance )
+    
+    
+25. caesarian.csv
+    Features = All columns except the last column
+    Labels = Last Column 
+    0 = NO and 1 = YES
+    
+    
+26. Go thru the code line by line
+        
+27. Default, p = 2, k = 5 if not passed the value
+
+28. CM concept is not possible in Regression, since we cannot compare .49 with .50
+    They are different, but we can in classification 
+
+29. Linear Classifier = Logistic Regression
+    Non Linear Classifier = kNN
+    
+    Lets visualise both to understand it better
+    
+30. Social_Network_Ads.csv
+    Lets assume it is the Facebook data.
+    How does FB gets your income data ?
+    When FB shows ads to you, whethere you clicked or no
+    Manas, whose age is 20 years and salary 50000, tell whether he will click the
+    advt or no ?
+    
+    20, 50000, ??
+    
+    
+31. 03_Demo_LogisticRegression_Visualization.py  
+
+
+32. 04_Demo_kNN_Visualization.py
+
+
+33. After seeing data you cannot say which algo works better 
+    you need to check and confirm.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+       
+   
+    
+   
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+Here are some examples of binary classification problems:
+
+Spam Detection : Predicting if an email is Spam or not
+Credit Card Fraud : Predicting if a given credit card transaction is fraud or not
+Health : Predicting if a given mass of tissue is benign or malignant
+Marketing : Predicting if a given user will buy an insurance product or not
+Banking : Predicting if a customer will default on a loan.
+
+"""
+
+WHY NOT LINEAR REGRESSION
+Why not linear regression?
+When the response variable has only 2 possible values, it is desirable to have a model that predicts the value either as 0 or 1 or as a probability score that ranges between 0 and 1.
+
+Linear regression does not have this capability. Because, If you use linear regression to model a binary response variable, the resulting model may not restrict the predicted Y values within 0 and 1.
+
+//Show the image
+
+This is where logistic regression comes into play. In logistic regression, you get a probability score that reflects the probability of the occurence of the event.
+
+An event in this case is each row of the training dataset. It could be something like classifying if a given email is spam, or mass of cell is malignant or a user will buy a product and so on.
+
+""""
+Entropy. A decision tree is built top-down from a 
+root node and involves partitioning the data into 
+subsets that contain instances with similar values 
+(homogenous). ID3 algorithm uses entropy to calculate 
+the homogeneity of a sample.
+
+http://www.saedsayad.com/decision_tree.htm
+"""
+
+
+
+
+""""
+Entropy. A decision tree is built top-down from a 
+root node and involves partitioning the data into 
+subsets that contain instances with similar values 
+(homogenous). ID3 algorithm uses entropy to calculate 
+the homogeneity of a sample.
+
+http://www.saedsayad.com/decision_tree.htm
+"""
+
+"""
+https://medium.com/@rnbrown/creating-and-visualizing-decision-trees-with-python-f8e8fa394176
+https://pythonprogramminglanguage.com/decision-tree-visual-example/
+http://benalexkeen.com/decision-tree-classifier-in-python-using-scikit-learn/
+
+"""
+"""
+Parameter tuning:
+https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
+
+
+"""
+https://medium.com/@rnbrown/creating-and-visualizing-decision-trees-with-python-f8e8fa394176
+https://pythonprogramminglanguage.com/decision-tree-visual-example/
+http://benalexkeen.com/decision-tree-classifier-in-python-using-scikit-learn/
+
+"""
+"""
+Parameter tuning:
+https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
+
+"""
+
+"""
+https://stackabuse.com/decision-trees-in-python-with-scikit-learn/
+http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/
+"""
+
+
+"""
+Visualize the Decision Tree
+https://pythonprogramminglanguage.com/decision-tree-visual-example/
+"""
+
+"""
+http://dataaspirant.com/2017/05/22/random-forest-algorithm-machine-learing/
+"""
+
+"""
+Parameter Tuning:
+https://medium.com/all-things-ai/in-depth-parameter-tuning-for-random-forest-d67bb7e920d
+"""
+"""
+
+
+"""
+https://adrianromano.com/dealing-with-classification-problems-in-data-science-classification-algorithms-evaluation-metrics/
+https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/
+"""
+
+
+"""
+Classification Algorithms
+There are two types of learners in classification which are categorized as:
+
+Lazy learners: This type of learner stores training data until it is used for testing. The outcome will be conducted based on the most related data in the stored training data. This learner requires less time for training but more time for prediction.
+kNN is lazy.
+
+Eager learners: This type of learner uses the given training data to construct a classification model before receiving any testing data. This learner takes a long time for training but require lesser time for prediction.
+logistic regression is eager learners.
+
+"""
+
+
+
+-------------------------------------------------
+Day1
+//Today we talk about classifcation machine learning model (linear classifier)
+// And the first algo, we discuss is logistic regression which is part of simple linear regresson.
+// Let's understand what is logistic regresson/
+// Predicts the binary outcome ( YES/NO) or sometimes (MAY BE)
+// Explain the data (social network.csv) -  profiles of the users
+// This social network has few clients - which can put ads on this platform
+// data tells who bought CAR (YES/NO) - based on Age and Salary
+// How to draw the value of dependent variable out of logistic regression?
+// If probability < .5, we say dependent variable is ZERO (NO)
+// If probability > .5, we say dependent variable is ONE (YES)
+// Show the image (logistic_regresson.jpg)
+//Sample code
+// Read the data
+//SPlit it
+// No need to labeling as not categorical data
+// But need to perform the feature scaling as we need accurate predictions
+// Apply the model on train data
+// predict for test data
+// Explain the confusion matrix (used to evaluate the performance of the model)? confusion matrix is also called as error matrix.
+// in unsupervised learning it (confusion matrix) is usually called a matching matrix
+// Reference - http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/// Open the above link and explain few terms out of this page
+
++ True positives (TP): These are cases in which we predicted yes (they have the disease), and they do have the disease.
+
++ True negatives (TN): We predicted no, and they don't have the disease.
+
++ False positives (FP): We predicted yes, but they don't actually have the disease. (Also known as a "Type I error.")
+
++ False negatives (FN): We predicted no, but they actually do have the disease. (Also known as a "Type II error.")
+
+//Explain the graph generation correctly
+
+
+// Visualization -  Prediction Boundary 
+//Look at the results using graph
+
+
+// Next we will build the non linear classifier
+
+
+-----------------------------------------
+// Agile methodology of software development
+// standups
+// scrum
+// sprints (10 days, 1 week etc.)
+--------------------------------------------------------------------
+In four years of my career into analytics I have built more than 80% of classification models and just 15-20% regression models. These ratios can be more or less generalized throughout the industry. The reason of a bias towards classification models is that most analytical problem involves making a decision
+
+KNN algorithm is one of the simplest classification algorithm. Even with such simplicity, it can give highly competitive results. KNN algorithm can also be used for regression problems. 
+------------------------------------------------------------
+//Today we focus on buidling non linear classifier for the same case (social media ads) that we did last day
+ 
+
+// K-NN - K Nearest Neighbors
+// Standard value of K = 5
+// Non linear classfier
+// Eucleadian distance (we use this with param metric = "minkowski")
+// Other distance to be used is "manhattan distance"[Definition: The distance between two points measured along axes at right angles. In a plane with p1 at (x1, y1) and p2 at (x2, y2), it is |x1 - x2| + |y1 -
+ y2|.]
+
+
+-------------
+More about KNN
+https://www.kaggle.com/skalskip/iris-data-visualization-and-knn-classification
+// Visualization
+http://vision.stanford.edu/teaching/cs231n-demos/knn/
+
+------------------------------
+
+"""
+Density and Contour Plots
+
+https://jakevdp.github.io/PythonDataScienceHandbook/04.04-density-and-contour-plots.html
+
+"""
+
+
+
+#----------------------#
+"""
+Power parameter for the Minkowski metric. 
+When p = 1, this is equivalent to using manhattan_distance (l1), 
+and euclidean_distance (l2) for p = 2. 
+For arbitrary p, minkowski_distance (l_p) is used.
+
+Very important (minkowski distance issue):
+https://dzone.com/articles/machine-learning-measuring
+
+"""
+
+"""
+kNN reference:
+https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
+https://medium.com/@mohtedibf/in-depth-parameter-tuning-for-knn-4c0de485baf6
+"""

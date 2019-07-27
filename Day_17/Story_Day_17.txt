@@ -1,0 +1,424 @@
+
+1. Algorithm to Solve a Supervised Machine Learning Problem
+    Perform ritual of Importing Libraries
+    Load the data using Pandas read_csv method
+    Perform Exploratory Data Analysis ( Missing Values, Outliers )
+    Fix the Categorical data using LabelEncoding and OneHotEncoding
+    Remove Dummy Variable Trap
+    Create the Object of your Algorithm
+    Fit
+    Predict
+    Visualisation
+
+
+2. Polynomial Regression
+
+    Simple Linear Regression 
+        y = f(x) with x as a single feature    
+
+    Multiple Linear Regression
+        y = f (x,y,z,....) with x,y,z... as multiple features
+    
+    For Polynomial Regression 
+        output = ax**2 + bx**1 + c(x**0)
+        Quadratic Equation
+    
+    Polynomial Equation of Degree n with one feature only
+        output = ax**n + bx**(n-1) + ........
+    
+        y = f (x**n, x**n-1, x**n-2, .....) 
+    
+    There is only one feature x with different degrees
+   
+    
+3. Claims_Paid.csv
+    Insurance Company claims paid in Crores for every year.
+    It seems to be a LInear Regression Problem since cost is increasing every year
+    
+4. Import Libraries | EDA | Missing Value | Read Dataset | Features and Labels
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    # Importing the dataset
+    dataset = pd.read_csv('Claims_Paid.csv')
+    features = dataset.iloc[:, 0:1].values
+    labels = dataset.iloc[:, 1].values
+
+5. Let's first analyze the data
+   Scatter the points to visualise and check for positive co-relation
+
+    plt.scatter(features, labels)
+     
+6. Import LinearRegression , create Object and fit the dataset
+   No need to train and test since the dataset itself is small 
+ 
+    from sklearn.linear_model import LinearRegression
+    lin_reg_1 = LinearRegression()
+    lin_reg_1.fit(features, labels)
+
+7. Plot the best fit Line
+   Visualising the Linear Regression results
+    
+    plt.scatter(features, labels, color = 'red')
+    plt.plot(features, lin_reg_1.predict(features), color = 'blue')
+    plt.title('Linear Regression')
+    plt.xlabel('Year')
+    plt.ylabel('Claims Paid')
+    plt.show() 
+
+    By seeing the visuals it seems that the prediction would be poor
+    As years increases, the prediction would be poor / bad
+    
+    This is the case of underfitting, where
+    Training score is POOR / BAD
+    Testing score is also POOR / BAD
+    
+    Solution to this is the polynomial of degree n
+    We need to convert the features data to High Degree Data
+    
+8. Polynomial Feature
+    from sklearn.preprocessing import PolynomialFeatures
+    poly_object = PolynomialFeatures(degree = 5)
+    features_poly = poly_object.fit_transform(features)
+
+9. Now use Variable Explorer to vizualise the 5 Degree 
+
+
+10.Create LinearRegression Object and fit 
+
+    lin_reg_2 = LinearRegression()
+    lin_reg_2.fit(features_poly, labels)
+
+11. .predic(1981)t will not work since we need to change to n degree
+
+    print (lin_reg_2.predict(poly_object.transform(1981)))
+
+
+12. Visualising the Polynomial Regression results
+    plt.scatter(features, labels, color = 'red')
+    plt.plot(features, lin_reg_2.predict(poly_object.fit_transform(features)), color = 'blue')
+    plt.title('Polynomial Regression')
+    plt.xlabel('Year')
+    plt.ylabel('Claims Paid')
+    plt.show()
+
+13. Change the degree and test again and test the prediction
+
+14. What if the data is Multivariate, we can then also apply Polynomial Regression
+
+15. Salary_Classification.csv
+       
+    ++++++++++++++++++++
+    |Department        |
+    |WorkedHours       |
+    |Certification     |
+    |YearsExperience   |
+    |Salary            |
+    ++++++++++++++++++++
+
+    But which out of 4 features actually affect the most in predicting the salary ?
+    Multiple features can be also important in prediction 
+    We are not performing Prediction here.
+    
+    
+16. Solution 
+    There are two approaches
+    1. Forward Elimination 
+    2. Backward Elimination 
+
+17. OLS ( Optimal Least Square )
+    from statsmodel Library 
+    
+
+18. Import Library | Load Data | Feature and Labels
+    dataset = pd.read_csv('Salary_Classification.csv')
+
+    features = dataset.iloc[:, :-1].values
+    labels = dataset.iloc[:, -1].values      
+
+19. OLS
+    output = ax + by + cz + d(1)
+    a,b,c are known as weights / coefficients
+    d feature is constant
+    = d(1) + ax + by + cz
+    d(1) is taken care by LinearRegression Class, but not by OLS
+    We need tp add in the OLS from outside
+
+
+20. adds a constant column to input data set.
+    import statsmodels.api as sm
+    features = sm.add_constant(features) 
+ 
+21. Assume all features are important, after analysis we will drop some features which
+    are not important
+    
+22. Make a copy of all features
+    +++++++++++++++++++++++
+    |const             |0 |
+    |Dept Dummy 1      |1 |
+    |Dept Dummy 2      |2 |
+    |WorkedHours       |3 |
+    |Certification     |4 |
+    |YearsExperience   |5 |
+    +++++++++++++++++++++++
+
+     features_opt = features[:, [0, 1, 2, 3, 4, 5]]
+
+
+
+23. OLS fitting
+    features_opt = features[:, [0, 1, 2, 3, 4, 5]]
+    regressor_OLS = sm.OLS(endog = labels, exog = features_opt).fit()
+    regressor_OLS.summary()
+
+
+24. Visualise the Summary for p value p > |t|
+    Column whose p value is highest is the least imporant feature
+    p > 5% should be removed in the rule
+    We can drop that column in the next iteration
+    x2 is having the highest p value, so remove it 
+    x2 = Dept Dummy Varible 2
+    ++++++++++++++++++++++++++
+    |constant          |0 |  |
+    |Dept Dummy 1      |1 |x1|
+    |Dept Dummy 2      |2 |x2|
+    |WorkedHours       |3 |x3|
+    |Certification     |4 |x4|
+    |YearsExperience   |5 |x5|
+    ++++++++++++++++++++++++++
+
+
+25. Removing the Dept Dummy 2 variable (x2)
+    features_opt = features[:, [0, 1, 3, 4, 5]]
+  
+    ++++++++++++++++++++++++++
+    |constant          |0 |  |
+    |Dept Dummy 1      |1 |x1|
+    |Dept Dummy 2      |2 |  |x
+    |WorkedHours       |3 |x2|
+    |Certification     |4 |x3|
+    |YearsExperience   |5 |x4|
+    ++++++++++++++++++++++++++
+
+  
+  
+    regressor_OLS = sm.OLS(endog = labels, exog = features_opt).fit()
+    regressor_OLS.summary()
+
+
+
+26. Removing the Certification Column    (x3)
+    features_opt = features[:, [0, 1, 3, 5]]
+  
+    +++++++++++++++++++++++++++++
+    |constant          |0 |  |  |
+    |Dept Dummy 1      |1 |x1|x1|
+    |Dept Dummy 2      |2 |  |  |x
+    |WorkedHours       |3 |x2|x2|
+    |Certification     |4 |x3|  |x
+    |YearsExperience   |5 |x4|x3|
+    +++++++++++++++++++++++++++++
+
+    regressor_OLS = sm.OLS(endog = labels, exog = features_opt).fit()
+    regressor_OLS.summary()
+
+27. Removing the Dummy Variable 1 Column    (x1)
+    features_opt = features[:, [0, 3, 5]]
+
+    ++++++++++++++++++++++++++++++++
+    |constant          |0 |  |  |  |
+    |Dept Dummy 1      |1 |x1|x1|  |x
+    |Dept Dummy 2      |2 |  |  |  |x
+    |WorkedHours       |3 |x2|x2|x1|
+    |Certification     |4 |x3|  |  |x
+    |YearsExperience   |5 |x4|x3|x2|
+    ++++++++++++++++++++++++++++++++
+
+    regressor_OLS = sm.OLS(endog = labels, exog = features_opt).fit()
+    regressor_OLS.summary()
+
+
+28. Removing WorkedHours Column (x1)
+    features_opt = features[:, [0, 5]]
+
+    +++++++++++++++++++++++++++++++++++
+    |constant          |0 |  |  |  |  |
+    |Dept Dummy 1      |1 |x1|x1|  |  |x
+    |Dept Dummy 2      |2 |  |  |  |  |x
+    |WorkedHours       |3 |x2|x2|x1|  |x
+    |Certification     |4 |x3|  |  |  |x
+    |YearsExperience   |5 |x4|x3|x2|x1|
+    +++++++++++++++++++++++++++++++++++
+
+
+    regressor_OLS = sm.OLS(endog = labels, exog = features_opt).fit()
+    print (regressor_OLS.summary())
+
+29. Nothing to remove now
+    Both const and x1 (Years Experience) is needed, since the p value is < 5%
+    Experience is the most important feature to control the salary label
+
+
+30. Define p Value ?
+    p value = Probability that column by chance hs come in the decission making process
+    
+    regressor_OLS.pvalues
+    
+31. Statquest Youtube channel for Statistics
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+1. Talk about scrapy -  data scrapy
+2. Talk about Jupyter Notebooks
+3.  Extract, Transform, Load (ETL)  - preprocessing part
+4. ETL comes from Data Warehousing and stands for Extract-Transform-Load. .... sorting, joining, merging, aggregation and other operations ready to use.
+
+5. Cognitive Healthcare
+//IBM Watson
+// Microsoft Cortana Intelligent Suite
+// https://www.forbes.com/sites/janakirammsv/2017/01/03/how-ibm-and-microsoft-are-disrupting-the-healthcare-industry-with-cognitive-computing/#5ff942871a92
+//Through the application of natural language processing (NLP), data mining, and advanced text analytics, cognitive systems can assist doctors in diagnosing and faster decision making. They optimize patient selection for clinical trials through intelligent matching. In the oncology division, these systems assist in the creation of individualized treatment plans that enhance patient and experience.
+
+6. How IoT and DS can help learn right way to play and shot
+7.  Why Python for Data Sceince - show the image from kdnuggets (http://www.kdnuggets.com/).
+//Image - Why_Python_For_DataSceince.png
+
+// Economics Times Article
+++ Engineering students from MIT (Maharashtra Inst. Technology, Pune) made a robot Chintu to accompany elder people and help them. Can be useful for lonely parents.
+++ As updating the course curriculum in colleges is difficult, Intel has decided to train 15000 engineers in subjects around ML.
+++ Indian IT companies will need 3L data scientists by 2018.
+
+defination AI - creating machines that perform tasks that humans do. AI can be achieved with ML or without ML.
+
+definaton ML - training an algo to learn without being explicitly programmed. Involves feeding huge amount of data into algo and allowing it process and learn.
+
+Deep learning - branch of ML that tries to mimic the structure of human brain..using neural network.
+
+//Usage
+// Ixigo App - Predicting which day airline will charge lower ticket price. Most airlines follow sinosudal graph for pricing tickets.
+// Ixigo App also predicts about where your train ticket will confirm from waiting status.
+
+// Algorithim trading - 
+// Using big data and AI straties can you predict the GDP growth data.
+
+// Shane and Falguni (designers) using ML to predicts which fashion and color would be hot in coming season using IBM watson.
+
+// ML replacing radiologits job
+// Wipro says it got productivity of 12000 people out of 1800 chat bots (programs that perform automated tasks)
+// chat bots are not ML based...but predict the trends what may come in future
+
+
+
+// India is home to third largest cluster of AI startups - aruond 300
+// Recently Apple aquired tuplejump and Indian startup working in AI
+// Google acquired Halli Labs working on AI
+
+-------------------------------------------------
+Day1
+//Today we talk about classifcation machine learning model (linear classifier)
+// And the first algo, we discuss is logistic regression which is part of simple linear regresson.
+// Let's understand what is logistic regresson/
+// Predicts the binary outcome ( YES/NO) or sometimes (MAY BE)
+// Explain the data (social network.csv) -  profiles of the users
+// This social network has few clients - which can put ads on this platform
+// data tells who bought CAR (YES/NO) - based on Age and Salary
+// How to draw the value of dependent variable out of logistic regression?
+// If probability < .5, we say dependent variable is ZERO (NO)
+// If probability > .5, we say dependent variable is ONE (YES)
+// Show the image (logistic_regresson.jpg)
+//Sample code
+// Read the data
+//SPlit it
+// No need to labeling as not categorical data
+// But need to perform the feature scaling as we need accurate predictions
+// Apply the model on train data
+// predict for test data
+// Explain the confusion matrix (used to evaluate the performance of the model)? confusion matrix is also called as error matrix.
+// in unsupervised learning it (confusion matrix) is usually called a matching matrix
+// Reference - http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/// Open the above link and explain few terms out of this page
+
++ True positives (TP): These are cases in which we predicted yes (they have the disease), and they do have the disease.
+
++ True negatives (TN): We predicted no, and they don't have the disease.
+
++ False positives (FP): We predicted yes, but they don't actually have the disease. (Also known as a "Type I error.")
+
++ False negatives (FN): We predicted no, but they actually do have the disease. (Also known as a "Type II error.")
+
+//Explain the graph generation correctly
+
+
+// Visualization -  Prediction Boundary 
+//Look at the results using graph
+
+
+// Next we will build the non linear classifier
+
+
+-----------------------------------------
+// Agile methodology of software development
+// standups
+// scrum
+// sprints (10 days, 1 week etc.)
+--------------------------------------------------------------------
+In four years of my career into analytics I have built more than 80% of classification models and just 15-20% regression models. These ratios can be more or less generalized throughout the industry. The reason of a bias towards classification models is that most analytical problem involves making a decision
+
+KNN algorithm is one of the simplest classification algorithm. Even with such simplicity, it can give highly competitive results. KNN algorithm can also be used for regression problems. 
+------------------------------------------------------------
+//Today we focus on buidling non linear classifier for the same case (social media ads) that we did last day
+ 
+
+// K-NN - K Nearest Neighbors
+// Standard value of K = 5
+// Non linear classfier
+// Eucleadian distance (we use this with param metric = "minkowski")
+// Other distance to be used is "manhattan distance"[Definition: The distance between two points measured along axes at right angles. In a plane with p1 at (x1, y1) and p2 at (x2, y2), it is |x1 - x2| + |y1 -
+ y2|.]
+
+
+-------------
+More about KNN
+https://www.kaggle.com/skalskip/iris-data-visualization-and-knn-classification
+// Visualization
+http://vision.stanford.edu/teaching/cs231n-demos/knn/
+
+------------------------------
+
+"""
+Density and Contour Plots
+
+https://jakevdp.github.io/PythonDataScienceHandbook/04.04-density-and-contour-plots.html
+
+"""
+
+
+
+#----------------------#
+"""
+Power parameter for the Minkowski metric. 
+When p = 1, this is equivalent to using manhattan_distance (l1), 
+and euclidean_distance (l2) for p = 2. 
+For arbitrary p, minkowski_distance (l_p) is used.
+
+Very important (minkowski distance issue):
+https://dzone.com/articles/machine-learning-measuring
+
+"""
+
+"""
+kNN reference:
+https://kevinzakka.github.io/2016/07/13/k-nearest-neighbor/
+https://medium.com/@mohtedibf/in-depth-parameter-tuning-for-knn-4c0de485baf6
+"""
